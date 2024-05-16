@@ -15,6 +15,17 @@ services:
     networks:
       - proxy
 
+  nginx:
+    image: nginx:latest
+    depends_on:
+      - gophish
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - proxy
+    ports:
+      - "8080:80"
+
   gophish:
     image: gophish/gophish:latest
     ports:
@@ -33,4 +44,3 @@ networks:
 volumes:
   data:
   letsencrypt:
-  gophish-data
