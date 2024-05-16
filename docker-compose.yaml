@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  nginx-proxy-manager:
+    image: jc21/nginx-proxy-manager:latest
+    ports:
+      - "80:80"
+      - "81:81"
+      - "443:443"
+    volumes:
+      - data:/data
+      - letsencrypt:/etc/letsencrypt
+    environment:
+      DISABLE_IPV6: 'true'
+    networks:
+      - proxy
+
+  gophish:
+    image: gophish/gophish:latest
+    ports:
+      - "3333:3333"
+      - "80"
+      - "443"
+    volumes:
+      - gophish-data:/opt/gophish
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    driver: overlay
+
+volumes:
+  data:
+  letsencrypt:
+  gophish-data
